@@ -48,7 +48,9 @@ export function WebhookSettingsDialog({
       <DialogContent className="max-h-[90dvh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Pengaturan webhook</DialogTitle>
-          <DialogDescription>Pilih webhook untuk pesan berikutnya.</DialogDescription>
+          <DialogDescription>
+            Pilih webhook dan format jawaban untuk pesan berikutnya.
+          </DialogDescription>
         </DialogHeader>
         <form
           className="space-y-5"
@@ -77,6 +79,24 @@ export function WebhookSettingsDialog({
               <option value="default">Default aplikasi</option>
               <option value="custom">Webhook sendiri</option>
             </select>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="output-format">Format jawaban AI</Label>
+            <select
+              id="output-format"
+              className="w-full rounded-md border border-input bg-background p-2 text-sm"
+              value={draft.outputFormat ?? "auto"}
+              onChange={(e) =>
+                setDraft({ ...draft, outputFormat: e.target.value as "auto" | "table" })
+              }
+            >
+              <option value="auto">Otomatis</option>
+              <option value="table">Tabel</option>
+            </select>
+            <p className="text-xs text-muted-foreground">
+              Preferensi dikirim ke webhook. Pilih Tabel untuk meminta jawaban berupa tabel
+              Markdown.
+            </p>
           </div>
           {draft.mode === "default" ? (
             <p className="text-sm text-muted-foreground">

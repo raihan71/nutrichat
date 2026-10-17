@@ -13,6 +13,7 @@ export const sendChatMessage = createServerFn({ method: "POST" })
   .validator((d) =>
     z
       .object({
+        outputFormat: z.enum(["auto", "table"]).optional(),
         message: z.string().min(1).max(4000),
         conversationId: z.string().min(1).max(100),
         userId: z.string().min(1).max(200),
