@@ -1,6 +1,7 @@
 import type { WebhookReply } from "./chat-webhook";
 
 export type WebhookSettings = {
+  outputFormat?: "auto" | "table" | undefined;
   mode: "default" | "custom";
   url: string;
   auth: "none" | "basic" | "bearer";
@@ -45,7 +46,12 @@ export function validateWebhookSettings(settings: WebhookSettings): string | und
 
 export async function sendCustomChatMessage(
   settings: WebhookSettings,
-  data: { message: string; conversationId: string; userId: string },
+  data: {
+    message: string;
+    conversationId: string;
+    userId: string;
+    outputFormat?: "auto" | "table" | undefined;
+  },
 ): Promise<WebhookReply> {
   const error = validateWebhookSettings(settings);
   if (error) throw new Error(error);

@@ -1,3 +1,4 @@
+import { AssistantMessage } from "@/components/assistant-message";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { WebhookSettingsDialog } from "@/components/webhook-settings";
 import {
@@ -105,6 +106,7 @@ function ChatInner() {
           mode: saved.mode,
           url: saved.url,
           auth: saved.auth,
+          outputFormat: saved.outputFormat === "table" ? "table" : undefined,
         });
       }
     } catch {
@@ -121,6 +123,7 @@ function ChatInner() {
           mode: value.mode,
           url: value.url,
           auth: value.auth,
+          outputFormat: value.outputFormat,
         }),
       );
       setSettingsNotice("");
@@ -242,7 +245,12 @@ function ChatInner() {
     setMessages((m) => [...m, { id: createChatId(), role: "user", content: text }]);
     setLoading(true);
     try {
-      const data = { message: text, conversationId, userId: user.id };
+      const data = {
+        message: text,
+        conversationId,
+        userId: user.id,
+        outputFormat: webhook.outputFormat,
+      };
       const r =
         webhook.mode === "custom"
           ? await sendCustomChatMessage(webhook, data)
@@ -345,16 +353,18 @@ function ChatInner() {
                   {m.content}
                 </div>
               ) : (
-                <div key={m.id} className="flex gap-3 max-w-[90%]">
+                <div key={m.id} className="flex min-w-0 gap-3 max-w-[90%]">
                   <div className="mt-1 h-8 w-8 shrink-0 rounded-full bg-gradient-brand grid place-items-center text-sm">
                     🥑
                   </div>
-                  <div>
-                    <p
-                      className={`whitespace-pre-wrap break-words leading-relaxed ${m.role === "error" ? "text-destructive" : ""}`}
-                    >
-                      {m.content}
-                    </p>
+                  <div className="min-w-0">
+                    {m.role === "error" ? (
+                      <p className="whitespace-pre-wrap break-words leading-relaxed text-destructive">
+                        {m.content}
+                      </p>
+                    ) : (
+                      <AssistantMessage content={m.content} />
+                    )}
                     {m.meta && <p className="mt-1 text-xs text-muted-foreground">{m.meta}</p>}
                   </div>
                 </div>

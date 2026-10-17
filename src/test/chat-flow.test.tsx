@@ -58,6 +58,27 @@ afterEach(() => {
 });
 
 describe("Chat flow", () => {
+  it("persists table output preference and renders a table reply", async () => {
+    state.send.mockResolvedValue({
+      message: { content: "| Menu | Kalori |\n| --- | ---: |\n| Oat | 150 |" },
+    });
+    const view = render(<Chat />);
+    fireEvent.click(screen.getByRole("button", { name: "Pengaturan webhook" }));
+    fireEvent.change(screen.getByLabelText("Format jawaban AI"), {
+      target: { value: "table" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Simpan" }));
+    view.unmount();
+    render(<Chat />);
+    fireEvent.click(screen.getByRole("button", { name: "Kirim" }));
+    expect(await screen.findByRole("table")).toBeInTheDocument();
+    expect(screen.getByRole("columnheader", { name: "Kalori" })).toBeInTheDocument();
+    expect(screen.getByRole("cell", { name: "Oat" })).toBeInTheDocument();
+    expect(state.send).toHaveBeenCalledWith({
+      data: expect.objectContaining({ outputFormat: "table", message: "Sarapan cepat" }),
+    });
+  });
+
   it("sends through the custom webhook and persists no credentials", async () => {
     const fetchMock = vi.fn().mockResolvedValue({
       ok: true,
