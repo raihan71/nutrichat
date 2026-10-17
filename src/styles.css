@@ -1,0 +1,138 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --font-display: "Syne", system-ui, sans-serif;
+  --font-sans: "Plus Jakarta Sans", system-ui, sans-serif;
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-glow-1: var(--glow-1);
+  --color-glow-2: var(--glow-2);
+  --color-glow-3: var(--glow-3);
+}
+
+:root {
+  color-scheme: dark;
+  --radius: 1.25rem;
+  --background: oklch(0.13 0.01 280);
+  --foreground: oklch(0.97 0.01 100);
+  --card: oklch(0.18 0.015 280);
+  --card-foreground: oklch(0.97 0.01 100);
+  --popover: oklch(0.18 0.015 280);
+  --popover-foreground: oklch(0.97 0.01 100);
+  --primary: oklch(0.9 0.2 125);
+  --primary-foreground: oklch(0.15 0.02 280);
+  --secondary: oklch(0.24 0.02 280);
+  --secondary-foreground: oklch(0.97 0.01 100);
+  --muted: oklch(0.22 0.015 280);
+  --muted-foreground: oklch(0.68 0.02 280);
+  --accent: oklch(0.72 0.2 350);
+  --accent-foreground: oklch(0.15 0.02 280);
+  --destructive: oklch(0.65 0.22 25);
+  --destructive-foreground: oklch(0.98 0 0);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 14%);
+  --ring: oklch(0.9 0.2 125);
+  --glow-1: oklch(0.9 0.2 125);
+  --glow-2: oklch(0.72 0.2 350);
+  --glow-3: oklch(0.75 0.15 220);
+  --gradient-brand: linear-gradient(110deg, var(--glow-1), var(--glow-3) 50%, var(--glow-2));
+}
+
+:root.light {
+  color-scheme: light;
+  --background: oklch(0.985 0.008 110);
+  --foreground: oklch(0.22 0.025 280);
+  --card: oklch(1 0 0);
+  --card-foreground: var(--foreground);
+  --popover: oklch(1 0 0);
+  --popover-foreground: var(--foreground);
+  --primary: oklch(0.48 0.13 135);
+  --primary-foreground: oklch(0.99 0 0);
+  --secondary: oklch(0.94 0.015 110);
+  --secondary-foreground: var(--foreground);
+  --muted: oklch(0.94 0.01 110);
+  --muted-foreground: oklch(0.46 0.02 280);
+  --accent: oklch(0.9 0.06 350);
+  --accent-foreground: var(--foreground);
+  --destructive: oklch(0.52 0.2 25);
+  --border: oklch(0.3 0.02 280 / 18%);
+  --input: oklch(0.3 0.02 280 / 24%);
+  --ring: var(--primary);
+  --glow-1: oklch(0.49 0.14 135);
+  --glow-2: oklch(0.5 0.18 350);
+  --glow-3: oklch(0.47 0.1 220);
+}
+
+:root.light .glow-blob {
+  opacity: 0.12;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+  }
+}
+
+@utility text-gradient {
+  background: var(--gradient-brand);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+@utility bg-gradient-brand {
+  background: var(--gradient-brand);
+}
+@utility glow-blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(90px);
+  opacity: 0.35;
+  pointer-events: none;
+  animation: float 14s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(40px, -30px) scale(1.1);
+  }
+}
